@@ -1,4 +1,75 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NutriMatch AI - Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="texture"></div>
+    <div class="spotlight"></div>
+
+    <div class="split-container">
+
+        <!-- LEFT FULL IMAGE SIDE -->
+        <div class="left-side">
+            <img src="bowl.jpg" alt="AI Food Image">
+        </div>
+
+        <!-- RIGHT LOGIN SIDE -->
+        <div class="right-side">
+            <div class="card" id="card">
+
+    <h1>NutriMatch</h1>
+
+    <!-- Toggle Tabs -->
+    <div class="tab-buttons">
+        <button class="tab active" onclick="showLogin()">Login</button>
+        <button class="tab" onclick="showSignup()">Signup</button>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <div class="form-container active" id="loginForm">
+        <input type="Email" placeholder="Email" id="loginEmail">
+        <input type="Password" placeholder="Password" id="loginPassword">
+        <button class="btn signup-btn" onclick="login()">Login</button>
+        <p class="switch-text">
+            Not a member? <span onclick="showSignup()">Signup now</span>
+        </p>
+    </div>
+
+    <!-- SIGNUP FORM -->
+    <div class="form-container" id="signupForm">
+        <input id="loginEmail" type="Email" placeholder="Email Address">
+        <input id="loginPassword" type="Password" placeholder="Password">
+        <button class="btn signup-btn" onclick="register()">Create Account</button>
+        <p class="switch-text">
+            Already have an account? <span onclick="showLogin()">Login</span>
+        </p>
+    </div>
+
+</div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+
+</html>
+
+
+<!-- 
+
+<!DOCTYPE html>
 <html>
 <head>
   <title>NutriMatch AI - Auth</title>
@@ -26,4 +97,4 @@
 
   <script src="app.js"></script>
 </body>
-</html>
+</html> -->

@@ -97,3 +97,44 @@ function logout() {
   localStorage.removeItem("token");
   window.location.href = "index.html";
 }
+
+
+const card = document.getElementById("card");
+
+card.addEventListener("mousemove", (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    const rotateX = (y - centerY) / 15;
+    const rotateY = (centerX - x) / 15;
+
+    card.style.transform = `
+        rotateX(${rotateX}deg)
+        rotateY(${rotateY}deg)
+        scale(1.05)
+    `;
+});
+
+card.addEventListener("mouseleave", () => {
+    card.style.transform = "rotateX(0deg) rotateY(0deg) scale(1)";
+});
+
+function showLogin() {
+    document.getElementById("loginForm").classList.add("active");
+    document.getElementById("signupForm").classList.remove("active");
+
+    document.querySelectorAll(".tab")[0].classList.add("active");
+    document.querySelectorAll(".tab")[1].classList.remove("active");
+}
+
+function showSignup() {
+    document.getElementById("signupForm").classList.add("active");
+    document.getElementById("loginForm").classList.remove("active");
+
+    document.querySelectorAll(".tab")[1].classList.add("active");
+    document.querySelectorAll(".tab")[0].classList.remove("active");
+}
