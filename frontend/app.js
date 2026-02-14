@@ -48,18 +48,12 @@ async function findMatch() {
     return;
   }
 
+
+  
   const minCal = document.getElementById("minCal").value;
   const maxCal = document.getElementById("maxCal").value;
   const goal = document.getElementById("goal").value;
 
-//   const res = await fetch(
-//     `${API}/recipes/match?minCal=${minCal}&maxCal=${maxCal}&goal=${goal}`,
-//     {
-//       headers: {
-//         Authorization: "Bearer " + token
-//       }
-//     }
-//   );
 const url = `${API}/recipes/match?` +
   `minCal=${minCal.value}&` +
   `maxCal=${maxCal.value}&` +

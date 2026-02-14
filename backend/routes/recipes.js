@@ -6,93 +6,71 @@ const { calculateScore, riskAnalysis } = require("../utils/scoring");
 const router = express.Router();
 
 const headers = {
-  "Content-Type": "application/json",
-  Authorization: `Bearer ${process.env.FOODOSCOPE_TOKEN}`
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${process.env.FOODOSCOPE_TOKEN}`
 };
 
 router.get("/match", auth, async (req, res) => {
-  const {
-    minCal,
-    maxCal,
-    goal,
-    minProtein,
-    maxCarbs,
-    maxSugar,
-    maxFat,
-    minFiber,
-    maxSodium,
-    minIron,
-    minVitaminC
-  } = req.query;
+    const { minCal, maxCal, goal } = req.query;
 
-  try {
-    let page = 1;
-    const limit = 50;
-    const maxPages = 10;
-    let matchedRecipes = [];
+    try {
+        let page = 1;
+        const maxPages = 10;
+        let limit = 50;
+        let matchedRecipes = [];
 
-    while (page <= maxPages && matchedRecipes.length < 20) {
+        while (page <= maxPages && matchedRecipes.length < 20) {
 
-      const response = await axios.get(
-        `https://api.foodoscope.com/recipe2-api/recipe-micronutri/micronutritioninfo?page=${page}&limit=${limit}`,
-        { headers }
-      );
+            const response = await axios.get(
+                `http://cosylab.iiitd.edu.in:6969/recipe2-api/recipe-micronutri/micronutritioninfo?page=${page}&limit=${limit}`,
+                { headers }
+            );
 
-      const recipes = response.data.payload.data;
+            const recipes = response.data.payload.data;
 
-      if (!recipes || recipes.length === 0) break;
+            console.log("Page:", page);
+            console.log("Recipes fetched:", recipes.length);
 
-      const filtered = recipes.filter(recipe => {
+            if (!recipes || recipes.length === 0) break;
 
-        const calories = parseFloat(recipe["Calories"] || 0);
-        const protein = parseFloat(recipe["Protein (g)"] || 0);
-        const carbs = parseFloat(recipe["Carbohydrate, by difference (g)"] || 0);
-        const sugar = parseFloat(recipe["Sugars, total (g)"] || 0);
-        const fat = parseFloat(recipe["Total lipid (fat) (g)"] || 0);
-        const fiber = parseFloat(recipe["Fiber, total dietary (g)"] || 0);
-        const sodium = parseFloat(recipe["Sodium, Na (mg)"] || 0);
-        const iron = parseFloat(recipe["Iron, Fe (mg)"] || 0);
-        const vitaminC = parseFloat(recipe["Vitamin C, total ascorbic acid (mg)"] || 0);
+            // 🔥 FILTER INSIDE LOOP
+            const minCalories = parseFloat(minCal);
+            const maxCalories = parseFloat(maxCal);
 
-        return (
-          (!minCal || calories >= minCal) &&
-          (!maxCal || calories <= maxCal) &&
-          (!minProtein || protein >= minProtein) &&
-          (!maxCarbs || carbs <= maxCarbs) &&
-          (!maxSugar || sugar <= maxSugar) &&
-          (!maxFat || fat <= maxFat) &&
-          (!minFiber || fiber >= minFiber) &&
-          (!maxSodium || sodium <= maxSodium) &&
-          (!minIron || iron >= minIron) &&
-          (!minVitaminC || vitaminC >= minVitaminC)
-        );
-      });
+            const filteredRecipes = recipes.filter(recipe => {
+                const calories = parseFloat(recipe["Calories"] || 0);
 
-      const scored = filtered.map(recipe => {
-        const score = calculateScore(goal, recipe);
-        const risks = riskAnalysis(recipe);
+                const minCheck = isNaN(minCalories) || calories >= minCalories;
+                const maxCheck = isNaN(maxCalories) || calories <= maxCalories;
 
-        return {
-          title: recipe["Recipe_title"],
-          calories: recipe["Calories"],
-          score,
-          risks
-        };
-      });
+                return minCheck && maxCheck;
+            });
 
-      matchedRecipes = [...matchedRecipes, ...scored];
-      page++;
+
+            console.log("Filtered count:", filteredRecipes.length);
+
+            const scored = filteredRecipes.map(recipe => ({
+                title: recipe["Recipe_title"],
+                calories: recipe["Calories"],
+                score: calculateScore(goal, recipe),
+                risks: riskAnalysis(recipe)
+            }));
+
+            matchedRecipes = [...matchedRecipes, ...scored];
+
+            page++;
+        }
+
+        matchedRecipes.sort((a, b) => b.score - a.score);
+
+        res.json(matchedRecipes.slice(0, 5));
+
+    } catch (err) {
+        console.error("Match API Error:", err.message);
+        res.status(500).json({ error: "Something went wrong" });
     }
-
-    matchedRecipes.sort((a, b) => b.score - a.score);
-
-    res.json(matchedRecipes.slice(0, 5));
-
-  } catch (err) {
-    console.error("Match API Error:", err.response?.data || err.message);
-    res.status(500).json({ error: "Something went wrong" });
-  }
 });
+
 
 
 module.exports = router;
