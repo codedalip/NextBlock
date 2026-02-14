@@ -3,48 +3,63 @@
 
 <head>
     <title>NutriMatch Dashboard</title>
-    <!-- <link rel="stylesheet" href="style.css"> -->
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+    <button class="top-logout-btn" onclick="logout()" id="loading">Logout</button>
+    <div class="dash-wrapper">
 
-    <div class="container">
-        <h2>Find Your Recipe Match</h2>
+        <div class="dash-card" id="dashCard">
 
-        <h3>Basic Filters</h3>
-        <input id="minCal" placeholder="Min Calories">
-        <input id="maxCal" placeholder="Max Calories">
+            <h1>NutriMatch Dashboard</h1>
 
-        <h3>Macronutrients</h3>
-        <input id="minProtein" placeholder="Min Protein (g)">
-        <input id="maxCarbs" placeholder="Max Carbs (g)">
-        <input id="maxSugar" placeholder="Max Sugar (g)">
-        <input id="maxFat" placeholder="Max Fat (g)">
-        <input id="minFiber" placeholder="Min Fiber (g)">
+            <!-- SECTION SELECTOR -->
+            <div class="dash-tabs">
+                <button class="dash-tab active" onclick="showSection('calories')">Calories</button>
+                <button class="dash-tab" onclick="showSection('macros')">Macronutrients</button>
+                <button class="dash-tab" onclick="showSection('micros')">Micronutrients</button>
+            </div>
 
-        <h3>Micronutrients</h3>
-        <input id="maxSodium" placeholder="Max Sodium (mg)">
-        <input id="minIron" placeholder="Min Iron (mg)">
-        <input id="minVitaminC" placeholder="Min Vitamin C (mg)">
+            <!-- CALORIES CARD -->
+            <div class="dash-section active" id="calories">
+                <input type="number" id="minCal" placeholder="Min Calories">
+                <input type="number" id="maxCal" placeholder="Max Calories">
+            </div>
+
+            <!-- MACROS CARD -->
+            <div class="dash-section" id="macros">
+                <input id="minProtein" placeholder="Min Protein (g)">
+                <input id="maxCarbs" placeholder="Max Carbs (g)">
+                <input id="maxSugar" placeholder="Max Sugar (g)">
+                <input id="maxFat" placeholder="Max Fat (g)">
+                <input id="minFiber" placeholder="Min Fiber (g)">
+            </div>
+
+            <!-- MICROS CARD -->
+            <div class="dash-section" id="micros">
+                <input id="maxSodium" placeholder="Max Sodium (mg)">
+                <input id="minIron" placeholder="Min Iron (mg)">
+                <input id="minVitaminC" placeholder="Min Vitamin C (mg)">
+            </div>
+
+            <select class="goal-select" id="goal">
+                <option value="weight_loss">Weight Loss</option>
+                <option value="muscle_gain">Muscle Gain</option>
+                <option value="diabetic">Diabetic Friendly</option>
+            </select>
+
+            <button class="search-btn" onclick="findMatch()">Find Match</button>
 
 
-        <select id="goal">
-            <option value="weight_loss">Weight Loss</option>
-            <option value="muscle_gain">Muscle Gain</option>
-            <option value="diabetic">Diabetic Friendly</option>
-        </select>
 
-        <button onclick="findMatch()">Search</button>
-        <button onclick="logout()">Logout</button>
-<div id="loading" class="loading" style="display: none;">
-  <div class="spinner"></div>
-  <p>Finding best matches...</p>
-</div>
-
-        <div id="results"></div>
+        </div>
     </div>
 
+    <div id="results"></div>
+
     <script src="app.js"></script>
+
 </body>
 
 </html>
