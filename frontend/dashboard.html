@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>NutriMatch Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>Find Your Recipe Match</h2>
+
+        <h3>Basic Filters</h3>
+        <input id="minCal" placeholder="Min Calories">
+        <input id="maxCal" placeholder="Max Calories">
+
+        <h3>Macronutrients</h3>
+        <input id="minProtein" placeholder="Min Protein (g)">
+        <input id="maxCarbs" placeholder="Max Carbs (g)">
+        <input id="maxSugar" placeholder="Max Sugar (g)">
+        <input id="maxFat" placeholder="Max Fat (g)">
+        <input id="minFiber" placeholder="Min Fiber (g)">
+
+        <h3>Micronutrients</h3>
+        <input id="maxSodium" placeholder="Max Sodium (mg)">
+        <input id="minIron" placeholder="Min Iron (mg)">
+        <input id="minVitaminC" placeholder="Min Vitamin C (mg)">
+
+
+        <select id="goal">
+            <option value="weight_loss">Weight Loss</option>
+            <option value="muscle_gain">Muscle Gain</option>
+            <option value="diabetic">Diabetic Friendly</option>
+        </select>
+
+        <button onclick="findMatch()">Search</button>
+        <button onclick="logout()">Logout</button>
+
+        <div id="results"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
