@@ -33,7 +33,7 @@ router.get("/match", auth, async (req, res) => {
 
             if (!recipes || recipes.length === 0) break;
 
-            // 🔥 FILTER INSIDE LOOP
+            //FILTER INSIDE LOOP
             const minCalories = parseFloat(minCal);
             const maxCalories = parseFloat(maxCal);
 
